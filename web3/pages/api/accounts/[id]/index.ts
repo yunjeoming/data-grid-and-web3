@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Web3 from 'web3';
-import web3Instance from '../../../../server/web3';
+import web3Instance from '../../web3';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;
