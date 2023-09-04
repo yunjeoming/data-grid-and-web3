@@ -1,0 +1,12 @@
+// accounts
+export const ADD_ACCOUNTS = 'ADD_ACCOUNTS';
+export const UPDATE_ACCOUNT = 'UPDATE_ACCOUNT';
+export const DELETE_ACCOUNTS = 'DELETE_ACCOUNTS';
+export const SET_FROM_ACCOUNT = 'SET_FROM_ACCOUNT';
+export const SET_TO_ACCOUNT = 'SET_TO_ACCOUNT';
+
+// transactions
+export const ADD_TRANSACTION = 'ADD_TRANSACTION';
+export const UPDATE_TRANSACTIONS = 'UPDATE_TRANSACTIONS';
+export const UPDATE_IS_EXCHANGED = 'UPDATE_IS_EXCHANGED';
+export const SET_EXCHANGE_FEE = 'SET_EXCHANGE_FEE';
