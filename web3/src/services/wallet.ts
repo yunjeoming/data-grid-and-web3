@@ -11,7 +11,7 @@ const requestAxios = async <T>(config: AxiosRequestConfig) => {
     if (!response.status.toString().startsWith('2')) {
       throw Error('invalid status num');
     }
-    return response.data.data as T;
+    return response.data as T;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response?.data) {
