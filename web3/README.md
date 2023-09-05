@@ -1,34 +1,90 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# web3.js 지갑 (with. ganache)
 
-## Getting Started
+`Next.js`, `TypeScript`, `Tailwind.css`
 
-First, run the development server:
+ganache로 로컬 이더리움 네트워크를 구축하고 제공받은 가상 계좌로 지갑을 구현했습니다.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+- 계좌를 선택하면 해당 계좌의 잔액을 확인할 수 있고 다른 계좌로 이더리움을 이체할 수 있습니다.
+- Transactions 탭에서 거래 내역을 조회할 수 있습니다.
+- /pages/api/에 web3.js api를 구현하였고, 프론트에서 api를 호출하도록 했습니다.
+- 새 트랜잭션의 생성 시간이 없어서 redux에 (state.transactions) 트랜잭션 id별 생성 시간을 별도로 저장하여 거래 내역을 구현했습니다.
+
+## 실행 방법
+
+1. 라이브러리 설치
+
+```
+> npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. ganache & 프로젝트 실행
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+> npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## api
 
-## Learn More
+- web3에 연결된 모든 계좌 조회
 
-To learn more about Next.js, take a look at the following resources:
+```
+GET /api/accounts
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- 특정 계좌 조회
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```
+GET /api/accounts/{id}
+```
 
-## Deploy on Vercel
+- 이체(트랜잭션 생성)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+POST /api/transactions
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+{
+  fromAccount: 보내는 계좌
+  toAccount: 받는 계좌
+  amount: 이체 금액
+}
+```
+
+- 특정 트랜잭션 조회
+
+```
+GET /api/transactions/{id}
+```
+
+- 트랜잭션 수수료 조회
+
+```
+GET /api/transactions/fee
+```
+
+## 폴더 구조
+```
+- pages
+- src
+  ├ app             # 페이지 컴포넌트
+  ├ components      # 공통 컴포넌트
+  ├ features        # 기능 컴포넌트
+  ├ layouts         # 레이아웃 컴포넌트
+  ├ redux           # 리덕스
+  ├ services        # api 호출
+  ├ types           # 타입 정의
+  └ utils           # 공통 유틸 정의
+```
+
+## 실행 화면
+
+- 메인 화면
+![main screen](https://github.com/yunjeoming/data-grid-and-web3/assets/76480300/3855ec6b-d409-4db7-a9d6-f72b3631d29b)
+
+- 계좌 선택
+![select account](https://github.com/yunjeoming/data-grid-and-web3/assets/76480300/45d21838-25d8-4cd9-af92-ddf713717c53)
+
+- 환전 완료
+![exchange](https://github.com/yunjeoming/data-grid-and-web3/assets/76480300/02b8597b-da2a-4811-b2cf-0403ff571567)
+
+- 거래 내역 확인
+![transactions screen](https://github.com/yunjeoming/data-grid-and-web3/assets/76480300/013aecc1-11a7-4752-8a57-180bb3c36e64)
