@@ -5,15 +5,15 @@ import { WalletService } from '@/services/wallet';
 import { RowDiv, Section } from '@/layouts';
 import Dropdown from '@/components/Dropdown';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/redux/reducers';
-import { AccountsState, updateAccount, setToAccount } from '@/redux/actions/accounts';
+import { updateAccount, setToAccount } from '@/redux/actions/accounts';
 import { addTransaction } from '@/redux/actions/transactions';
 import ExchangeFee from './ExchangeFee';
+import { memoizedAccountsAndFee } from '@/redux/reselect';
 
 const ExchangeForm = () => {
   const dispatch = useDispatch();
 
-  const { allAccounts, fromAccount, toAccount } = useSelector<RootState, AccountsState>((state) => state.accounts);
+  const { allAccounts, fromAccount, toAccount, fee } = useSelector(memoizedAccountsAndFee);
 
   const [value, setValue] = useState('');
   const [isError, setIsError] = useState(false);
@@ -37,9 +37,9 @@ const ExchangeForm = () => {
         return false;
       }
 
-      const balance = allAccounts?.[fromAccount || '']?.balance;
-      if (balance && Number(balance) < Number(value)) {
-        setValue(balance);
+      const maxBalance = Number(allAccounts?.[fromAccount || '']?.balance) - Number(fee || '0');
+      if (maxBalance && Number(maxBalance) < Number(value)) {
+        setValue(maxBalance.toString());
         return false;
       }
       return true;

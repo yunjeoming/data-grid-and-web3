@@ -2,16 +2,16 @@
 
 import { FC, useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/redux/reducers';
-import { AccountsState, addAccounts, deleteAccounts, setFromAccount, updateAccount } from '@/redux/actions/accounts';
+import { addAccounts, deleteAccounts, setFromAccount, updateAccount } from '@/redux/actions/accounts';
 import Dropdown from '@/components/Dropdown';
 import { WalletService } from '@/services/wallet';
 import { Account, AllAccounts } from '@/types/wallet';
 import { BoxDiv, RowDiv, Section } from '@/layouts';
+import { memoizedAllCounts } from '@/redux/reselect';
 
 const MyAccounts: FC<{ accounts: Account['name'][] }> = ({ accounts }) => {
   const dispatch = useDispatch();
-  const { allAccounts, fromAccount } = useSelector<RootState, AccountsState>((state) => state.accounts);
+  const { allAccounts, fromAccount } = useSelector(memoizedAllCounts);
 
   const balance = useMemo(() => {
     const noneValue = '-';
@@ -55,10 +55,6 @@ const MyAccounts: FC<{ accounts: Account['name'][] }> = ({ accounts }) => {
     },
     [allAccounts, dispatch]
   );
-
-  useEffect(() => {
-    console.log(allAccounts);
-  }, [allAccounts]);
 
   return (
     <Section>
