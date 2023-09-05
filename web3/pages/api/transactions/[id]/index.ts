@@ -5,10 +5,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const { id } = req.query;
   if (!id || Array.isArray(id)) {
     return res.status(400).json({
-      status: 400,
-      error: {
-        text: '잘못된 트랜잭션 id입니다.',
-      },
+      text: '잘못된 트랜잭션 id입니다.',
     });
   }
 
@@ -18,6 +15,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       const transaction = await web3.eth.getTransaction(id);
 
+      if (!transaction) {
+        return res.status(404).json({
+          text: '존재하지 않는 트랜잭션입니다.',
+        });
+      }
+
       const transactionResult = {
         to: transaction.to,
         from: transaction.from,
@@ -25,20 +28,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       };
 
       res.status(200).json({
-        status: 200,
-        data: {
-          ...transactionResult,
-          txId: id,
-        },
+        ...transactionResult,
+        txId: id,
       });
     } catch (error) {
       console.error(error);
       res.status(500).json({
-        status: 500,
-        error: {
-          text: '트랜잭션 조회 중 오류가 발생했습니다.',
-          error,
-        },
+        text: '트랜잭션 조회 중 오류가 발생했습니다.',
+        error,
       });
     }
   }

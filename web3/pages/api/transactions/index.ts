@@ -31,21 +31,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
 
       res.status(200).json({
-        status: 200,
-        data: {
-          ...transaction,
-          txId: transactionResult.transactionHash,
-          value: amount,
-        },
+        ...transaction,
+        txId: transactionResult.transactionHash,
+        value: amount,
       });
     } catch (error) {
       console.error(error);
       res.status(500).json({
-        status: 500,
-        error: {
-          text: '트랜잭션 전송 중 오류가 발생했습니다.',
-          error,
-        },
+        text: '트랜잭션 전송 중 오류가 발생했습니다.',
+        error,
       });
     }
   }

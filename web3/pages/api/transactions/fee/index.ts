@@ -16,19 +16,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const gasLimit = await web3.eth.estimateGas(fakeTransaction);
 
       res.status(200).json({
-        status: 200,
-        data: {
-          fee: web3.utils.fromWei(gasPrice * gasLimit, 'ether'),
-        },
+        fee: web3.utils.fromWei(gasPrice * gasLimit, 'ether'),
       });
     } catch (error) {
       console.error(error);
       res.status(500).json({
-        status: 500,
-        error: {
-          text: '트랜잭션 수수료 조회 중 오류가 발생했습니다.',
-          error,
-        },
+        text: '트랜잭션 수수료 조회 중 오류가 발생했습니다.',
+        error,
       });
     }
   }
