@@ -1,8 +1,11 @@
 import { FC } from 'react';
 import { BoxDiv, TxAccountDiv, TxDiv } from '@/layouts';
 import { Transaction } from '@/types/wallet';
+import { WalletUtils } from '@/utils/wallet';
 
 const Transaction: FC<Transaction> = ({ from, to, value, createdAt }) => {
+  const { date, time } = WalletUtils.getDateAndTime(createdAt);
+
   return (
     <TxDiv>
       <TxAccountDiv>
@@ -10,9 +13,9 @@ const Transaction: FC<Transaction> = ({ from, to, value, createdAt }) => {
         <span>⇨</span>
         <BoxDiv styles="overflow-hidden text-ellipsis">{to}</BoxDiv>
       </TxAccountDiv>
-      <span>{value}</span>
+      <span className="text-sm">{WalletUtils.convertRoundedValue(value)}</span>
       <span className="text-xs">
-        {createdAt.split('T')[0]} <br /> {new Date(createdAt).toLocaleTimeString()}
+        {date} <br /> {time}
       </span>
     </TxDiv>
   );

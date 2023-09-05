@@ -15,4 +15,17 @@ export const WalletUtils = {
 
     return successDatas;
   },
+  convertRoundedValue: (value: string, fixed: number = 6) => {
+    if (value.includes('.')) {
+      return Number(value).toFixed(fixed);
+    } else {
+      return value;
+    }
+  },
+  getDateAndTime: (createdAt: string) => {
+    const dateObj = new Date(createdAt);
+    const date = dateObj.toLocaleDateString();
+    const time = dateObj.toLocaleTimeString();
+    return { date, time };
+  },
 };
